@@ -171,6 +171,35 @@ with lib; {
         supress_errors = nullableEnable;
         watchdog_timeout = mkNullOption { type = ints.unsigned; };
       };
+
+      # Layouts:
+      dwindle = {
+        pseudotile = nullableEnable;
+        force_split = mkNullOption { type = ints.between 0 2; };
+        preserve_split = nullableEnable;
+        smart_split = nullableEnable;
+        smart_resizing = nullableEnable;
+        permanent_direction_override = nullableEnable;
+        special_scale_factor = mkNullOption { type = float; };
+        split_width_multiplier = mkNullOption { type = float; };
+        no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
+        use_active_for_splits = nullableEnable;
+        default_split_ratio = mkNullOption { type = float; };
+      };
+
+      master = {
+        allow_small_split = nullableEnable;
+        special_scale_factor = mkNullOption { type = float; };
+        mfact = mkNullOption { type = float; };
+        new_is_master = nullableEnable;
+        new_on_top = nullableEnable;
+        no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
+        orientation = mkNullOption { type = str; };
+        inherit_fullscreen = nullableEnable;
+        always_center_master = nullableEnable;
+        smart_resizing = nullableEnable;
+        drop_at_cursor = nullableEnable;
+      };
     };
   };
 }
