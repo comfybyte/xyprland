@@ -73,8 +73,12 @@ rec {
       '') submaps)) + "\n" + "submap = reset");
 
   writeOptions = options:
-    builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs
-      (name: value: ''
-        ${name} ${toHyprlandObj value}
-      '') options));
+    let filterEmpty = defs: builtins.filter (def: def != null) defs;
+    in builtins.concatStringsSep "\n" (filterEmpty (builtins.attrValues
+      (builtins.mapAttrs (name: value:
+        if isNullSet value then
+          null
+        else ''
+          ${name} ${toHyprlandObj value}
+        '') options)));
 }
