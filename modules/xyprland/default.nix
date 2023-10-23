@@ -111,7 +111,7 @@ in {
       extraConfig = with helpers; ''
         ${cfg.extraConfig.pre}
 
-        ${writeOpts.general cfg.options.general}
+        ${writeOptions cfg.options}
         ${"$" + cfg.mod.name} = ${cfg.mod.key}
         ${writeMonitors cfg.monitors}
         ${writeOnceStart cfg.onceStart}

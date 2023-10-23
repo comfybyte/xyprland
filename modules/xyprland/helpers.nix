@@ -72,9 +72,9 @@ rec {
         bind = , escape, submap, reset
       '') submaps)) + "\n" + "submap = reset");
 
-  writeOpts = {
-    general = general: ''
-      general ${toHyprlandObj general}
-    '';
-  };
+  writeOptions = options:
+    builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs
+      (name: value: ''
+        ${name} ${toHyprlandObj value}
+      '') options));
 }
