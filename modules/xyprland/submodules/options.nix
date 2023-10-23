@@ -3,7 +3,8 @@ with lib; {
   options.programs.xyprland.options = let
     mkNullOption = (option:
       mkOption option // {
-        type = with types; nullOr (option.type);
+        type = with types;
+          nullOr (if option ? "type" then option.type else anything);
         default = null;
       });
     nullableEnable = mkNullOption { type = types.bool; };
