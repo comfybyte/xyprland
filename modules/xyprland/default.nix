@@ -5,7 +5,10 @@ let
   helpers = import ./helpers.nix;
   customTypes = import ./custom_types.nix lib;
 in {
-  imports = with inputs; [ hyprland.homeManagerModules.default ];
+  imports = with inputs; [
+    hyprland.homeManagerModules.default
+    ./submodules/options.nix
+  ];
 
   options.programs.xyprland = {
     enable = mkEnableOption "Whether to enable this module.";
@@ -24,35 +27,6 @@ in {
         type = types.str;
         description = "A name for the mod variable.";
         default = "mod";
-      };
-    };
-
-    options = let
-      mkNullOption = (option:
-        mkOption option // {
-          type = with types; nullOr (option.type);
-          default = null;
-        });
-    in {
-      general = {
-        border_size = mkNullOption { type = types.ints.unsigned; };
-        no_border_on_floating = mkNullOption { type = types.bool; };
-        gaps_in = mkNullOption { type = types.ints.unsigned; };
-        gaps_out = mkNullOption { type = types.ints.unsigned; };
-        cursor_inactive_timeout = mkNullOption { type = types.ints.unsigned; };
-        layout =
-          mkNullOption { type = with types; enum [ "dwindle" "master" ]; };
-        no_cursor_wraps = mkNullOption { type = types.bool; };
-        no_focus_fallback = mkNullOption { type = types.bool; };
-        apply_sens_to_raw = mkNullOption { type = types.bool; };
-        resize_on_border = mkNullOption { type = types.bool; };
-        extend_border_grab_area = mkNullOption { type = types.ints.unsigned; };
-        hover_icon_on_border = mkNullOption { type = types.bool; };
-        allow_tearing = mkNullOption { type = types.bool; };
-        "col.inactive_border" = mkNullOption { type = types.str; };
-        "col.active_border" = mkNullOption { type = types.str; };
-        "col.no_group_border " = mkNullOption { type = types.str; };
-        "col.no_group_border_active" = mkNullOption { type = types.str; };
       };
     };
 
@@ -106,12 +80,12 @@ in {
     extraConfig = {
       pre = mkOption {
         type = types.lines;
-        description = "Lines to add before module configuration.";
+        description = "Lines to prepend to configuration file.";
         default = "";
       };
       post = mkOption {
         type = types.lines;
-        description = "Lines to add after module configuration.";
+        description = "Lines to postpend to configuration file.";
         default = "";
       };
     };

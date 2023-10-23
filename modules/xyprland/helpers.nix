@@ -11,6 +11,8 @@ rec {
 
   toHyprlandObj = (set:
     let
+      parseBool = x: if x == true then 1 else 0;
+      parseSpecial = x: if builtins.isBool x then (parseBool x) else x;
       lines = builtins.filter (line: line != null) (builtins.attrValues
         (builtins.mapAttrs (name: value:
           let
@@ -18,7 +20,7 @@ rec {
             content = if isSet then
               (if isNullSet value then null else (toHyprlandObj value))
             else
-              (if value == null then null else value);
+              parseSpecial value;
           in (if content == null then
             null
           else
