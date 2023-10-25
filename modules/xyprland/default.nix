@@ -1,15 +1,12 @@
-self:
-{ config, lib, inputs, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+hyprland:
 with lib;
 let
   cfg = config.programs.xyprland;
   helpers = import ./helpers.nix;
   customTypes = import ./custom_types.nix lib;
 in {
-  imports = with inputs; [
-    hyprland.homeManagerModules.default
-    ./submodules/options.nix
-  ];
+  imports = [ hyprland.homeManagerModules.default ./submodules/options.nix ];
 
   options.programs.xyprland = {
     enable = mkEnableOption "Whether to enable this module.";
