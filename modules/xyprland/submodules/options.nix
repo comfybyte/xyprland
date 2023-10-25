@@ -84,6 +84,30 @@ with lib; {
       follow_mouse = mkNullOption { type = ints.between 0 3; };
       mouse_refocus = nullableEnable;
       float_switch_override_focus = mkNullOption { type = ints.between 0 2; };
+
+      touchpad = {
+        disable_while_typing = nullableEnable;
+        natural_scroll = nullableEnable;
+        scroll_factor = mkNullOption { type = float; };
+        middle_button_emulation = nullableEnable;
+        tap_button_map = mkNullOption { type = enum [ "lrm" "lmr" ]; };
+        clickfinger_behavior = nullableEnable;
+        tap-to-click = nullableEnable; # Docs say kebab-case, weird.
+        drag_lock = nullableEnable;
+        tap-and-drag = nullableEnable;
+      };
+
+      touchdevice = {
+        transform = mkNullOption { type = int; };
+        output = mkNullOption { type = str; };
+      };
+
+      tablet = {
+        transform = mkNullOption { type = int; };
+        output = mkNullOption { type = str; };
+        region_position = { type = str; };
+        region_size = { type = str; };
+      };
     };
 
     gestures = {
