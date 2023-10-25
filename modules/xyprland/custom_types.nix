@@ -1,25 +1,5 @@
-lib: with lib; {
-  monitor = types.submodule {
-    options = {
-      enable = mkEnableOption "Enable this monitor" // { default = true; };
-      name = mkOption { type = types.str; };
-      resolution = mkOption { type = types.str; };
-      position = mkOption { type = types.str; };
-      scale = mkOption { type = types.str; };
-    };
-  };
-
-  envVar = types.submodule {
-    options = {
-      name = mkOption { type = types.str; };
-      value = mkOption { type = types.str; };
-      delimiter = mkOption {
-        type = types.str;
-        default = "=";
-      };
-    };
-  };
-
+lib:
+with lib; rec {
   bind = types.submodule {
     options = {
       enable = mkEnableOption "Whether to enable this keybind." // {
@@ -29,17 +9,40 @@ lib: with lib; {
         type = with types; nullOr str;
         description =
           "A string of bind flags to add (<https://wiki.hyprland.org/Configuring/Binds/#bind-flags>).";
+        example = "le";
         default = "";
       };
       text = mkOption {
         type = types.str;
         description = "This bind's contents.";
+        example = "SUPER, Q, killactive, ";
+      };
+    };
+  };
+
+  submap = types.submodule {
+    options = {
+      enable = mkEnableOption "Whether to enable this submap." // {
+        default = true;
+      };
+      binds = mkOption {
+        type = types.listOf bind;
+        description = "A list of binds to enable while inside this submap.";
+        default = [ ];
+      };
+      exit = mkOption {
+        type = bind;
+        description = "A bind to exit this submap. Defaults to Escape.";
+        default = { text = ", escape, submap, reset"; };
       };
     };
   };
 
   windowRule = types.submodule {
     options = {
+      enable = mkEnableOption "Whether to enable this window rule." // {
+        default = true;
+      };
       rule = mkOption { type = types.str; };
       window = mkOption { type = types.str; };
     };
@@ -48,9 +51,7 @@ lib: with lib; {
   defaultWorkspace = types.submodule {
     options = {
       text = mkOption { type = types.str; };
-      silent = mkEnableOption "Whether to not switch to it when opened." // {
-        default = false;
-      };
+      silent = mkEnableOption "Whether to not switch to it when opened.";
     };
   };
 }

@@ -20,25 +20,36 @@ in {
         type = types.str;
         description =
           "Which key to use as mod. Referenced with $mod by default.";
+        example = "ALT";
         default = "SUPER";
       };
 
       name = mkOption {
         type = types.str;
         description = "A name for the mod variable.";
+        example = "modKey";
         default = "mod";
       };
     };
 
     monitors = mkOption {
-      type = types.listOf customTypes.monitor;
-      description = "A list of monitor configurations.";
+      type = with types; listOf (listOf str);
+      description = "A list of monitor configuration lists.";
+      example = ''
+        [ [ "DP-1" "1920x1080@60" "0x0" "1" ] ]
+      '';
       default = [ ];
     };
 
     env = mkOption {
-      type = types.listOf customTypes.envVar;
-      description = "A list of environment variables.";
+      type = with types; attrsOf str;
+      description = "A set of environment variables to add.";
+      example = ''
+        {
+          QT_QPA_PLATFORM = "wayland";
+          XDG_CURRENT_DESKTOP = "Hyprland";
+        };
+      '';
       default = [ ];
     };
 
@@ -49,10 +60,10 @@ in {
     };
 
     submaps = mkOption {
-      type = with types; attrsOf (listOf customTypes.bind);
+      type = with types;
+        either (listOf customTypes.submap) (attrsOf customTypes.bind);
       description = ''
-        A set of submap names mapped to a list of their binds.
-        Automatically binds exiting to Escape.
+        Submaps to add as either a set with each value being a list of binds, or a list of custom submodules.
       '';
       default = { };
     };
