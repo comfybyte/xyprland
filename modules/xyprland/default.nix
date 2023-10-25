@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ... }:
 hyprland:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.programs.xyprland;

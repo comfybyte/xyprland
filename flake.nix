@@ -6,8 +6,8 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { self, hyprland, ... }: {
-    homeManagerModules.xyprland = import ./modules/xyprland self hyprland;
+  outputs = { hyprland, ... }: {
+    homeManagerModules.xyprland = import ./modules/xyprland hyprland;
   };
 
   nixConfig = {
