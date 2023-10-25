@@ -25,6 +25,11 @@ with lib; rec {
       enable = mkEnableOption "Whether to enable this submap." // {
         default = true;
       };
+      name = mkOption {
+        type = types.str;
+        description = "This submap's name.";
+        example = "resize";
+      };
       binds = mkOption {
         type = types.listOf bind;
         description = "A list of binds to enable while inside this submap.";

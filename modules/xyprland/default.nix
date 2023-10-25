@@ -59,7 +59,7 @@ in {
 
     submaps = mkOption {
       type = with types;
-        either (listOf customTypes.submap) (attrsOf customTypes.bind);
+        either (listOf customTypes.submap) (attrsOf (listOf customTypes.bind));
       description = ''
         Submaps to add as either a set with each value being a list of binds, or a list of custom submodules.
       '';
