@@ -6,7 +6,8 @@ rec {
   isSetEmpty = set: builtins.length (builtins.attrNames set) == 0;
 
   isSetNull = set:
-    builtins.all (value: value == null) (builtins.attrValues set);
+    builtins.all (value: value == null || value == { })
+    (builtins.attrValues set);
 
   isNullSet = set: isSetEmpty set || isSetNull set;
 
@@ -95,11 +96,10 @@ rec {
             null) submaps)) + "\n" + "submap = reset");
 
   writeOptions = options:
-    builtins.concatStringsSep "\n" (filterNull (builtins.attrValues
-      (builtins.mapAttrs (name: value:
-        if isNullSet value then
-          null
-        else ''
-          ${name} ${toHyprlandObj value}
-        '') options)));
+    toLines (filterNull (builtins.attrValues (builtins.mapAttrs (name: value:
+      if isNullSet value then
+        null
+      else ''
+        ${name} ${toHyprlandObj value}
+      '') options)));
 }
