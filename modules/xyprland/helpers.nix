@@ -73,7 +73,7 @@ rec {
     + (builtins.concatStringsSep ("\n" + "exec-once = ") commands);
 
   writeSubmaps = submaps:
-    builtins.concatStringsSep "\n\n" (filterNull
+    (builtins.concatStringsSep "\n\n" (filterNull
       (if builtins.isAttrs submaps then
         builtins.attrValues (builtins.mapAttrs (submap: binds: ''
           submap = ${submap}
@@ -92,7 +92,7 @@ rec {
             else
               "bind = , escape, submap, reset")
           else
-            null) submaps));
+            null) submaps)) + "\n" + "submap = reset");
 
   writeOptions = options:
     builtins.concatStringsSep "\n" (filterNull (builtins.attrValues
