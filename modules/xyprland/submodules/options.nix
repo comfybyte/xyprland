@@ -105,8 +105,8 @@ with lib; {
       tablet = {
         transform = mkNullOption { type = int; };
         output = mkNullOption { type = str; };
-        region_position = { type = str; };
-        region_size = { type = str; };
+        region_position = mkNullOption { type = str; };
+        region_size = mkNullOption { type = str; };
       };
     };
 
