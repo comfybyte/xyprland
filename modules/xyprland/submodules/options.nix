@@ -146,85 +146,85 @@ with lib; {
         "col.locked_active" = mkNullOption { type = str; };
         "col.locked_inactive" = mkNullOption { type = str; };
       };
+    };
 
-      misc = {
-        disable_hyprland_logo = nullableEnable; # You monster.
-        disable_splash_rendering = nullableEnable;
-        force_hypr_chan = nullableEnable;
-        force_default_wallpaper = mkNullOption { type = int; };
-        vfr = nullableEnable;
-        vrr = mkNullOption { type = ints.between 0 2; };
-        mouse_move_enables_dpms = nullableEnable;
-        key_press_enables_dpms = nullableEnable;
-        always_follow_on_dnd = nullableEnable;
-        layers_hog_keyboard_focus = nullableEnable;
-        animate_manual_resizes = nullableEnable;
-        animate_mouse_windowdragging = nullableEnable;
-        disable_autoreload = nullableEnable;
-        enable_swallow = nullableEnable;
-        swallow_regex = mkNullOption { type = str; };
-        swallow_exception_regex = mkNullOption { type = str; };
-        focus_on_activate = nullableEnable;
-        no_direct_scanout = nullableEnable;
-        hide_cursor_on_touch = nullableEnable;
-        mouse_move_focuses_monitor = nullableEnable;
-        supress_portal_warnings = nullableEnable;
-        render_ahead_of_time = nullableEnable;
-        render_ahead_safezone = mkNullOption { type = ints.unsigned; };
-        cursor_zoom_factor = mkNullOption { type = float; };
-        cursor_zoom_rigid = nullableEnable;
-        allow_session_lock_restore = nullableEnable;
-        background_color = mkNullOption { type = float; };
-        close_special_on_empty = mkNullOption { };
-        new_window_takes_over_fullscreen =
-          mkNullOption { type = ints.between 0 2; };
-      };
+    misc = {
+      disable_hyprland_logo = nullableEnable; # You monster.
+      disable_splash_rendering = nullableEnable;
+      force_hypr_chan = nullableEnable;
+      force_default_wallpaper = mkNullOption { type = int; };
+      vfr = nullableEnable;
+      vrr = mkNullOption { type = ints.between 0 2; };
+      mouse_move_enables_dpms = nullableEnable;
+      key_press_enables_dpms = nullableEnable;
+      always_follow_on_dnd = nullableEnable;
+      layers_hog_keyboard_focus = nullableEnable;
+      animate_manual_resizes = nullableEnable;
+      animate_mouse_windowdragging = nullableEnable;
+      disable_autoreload = nullableEnable;
+      enable_swallow = nullableEnable;
+      swallow_regex = mkNullOption { type = str; };
+      swallow_exception_regex = mkNullOption { type = str; };
+      focus_on_activate = nullableEnable;
+      no_direct_scanout = nullableEnable;
+      hide_cursor_on_touch = nullableEnable;
+      mouse_move_focuses_monitor = nullableEnable;
+      supress_portal_warnings = nullableEnable;
+      render_ahead_of_time = nullableEnable;
+      render_ahead_safezone = mkNullOption { type = ints.unsigned; };
+      cursor_zoom_factor = mkNullOption { type = float; };
+      cursor_zoom_rigid = nullableEnable;
+      allow_session_lock_restore = nullableEnable;
+      background_color = mkNullOption { type = float; };
+      close_special_on_empty = mkNullOption { };
+      new_window_takes_over_fullscreen =
+        mkNullOption { type = ints.between 0 2; };
+    };
 
-      xwayland = {
-        use_nearest_neighbor = nullableEnable;
-        force_zero_scaling = nullableEnable;
-      };
+    xwayland = {
+      use_nearest_neighbor = nullableEnable;
+      force_zero_scaling = nullableEnable;
+    };
 
-      debug = {
-        overlay = nullableEnable;
-        damage_blink = nullableEnable;
-        disable_logs = nullableEnable;
-        disable_time = nullableEnable;
-        damage_tracking = mkNullOption { type = ints.unsigned; };
-        enable_stdout_logs = nullableEnable;
-        manual_crash = nullableEnable;
-        supress_errors = nullableEnable;
-        watchdog_timeout = mkNullOption { type = ints.unsigned; };
-      };
+    debug = {
+      overlay = nullableEnable;
+      damage_blink = nullableEnable;
+      disable_logs = nullableEnable;
+      disable_time = nullableEnable;
+      damage_tracking = mkNullOption { type = ints.unsigned; };
+      enable_stdout_logs = nullableEnable;
+      manual_crash = nullableEnable;
+      supress_errors = nullableEnable;
+      watchdog_timeout = mkNullOption { type = ints.unsigned; };
+    };
 
-      # Layouts:
-      dwindle = {
-        pseudotile = nullableEnable;
-        force_split = mkNullOption { type = ints.between 0 2; };
-        preserve_split = nullableEnable;
-        smart_split = nullableEnable;
-        smart_resizing = nullableEnable;
-        permanent_direction_override = nullableEnable;
-        special_scale_factor = mkNullOption { type = float; };
-        split_width_multiplier = mkNullOption { type = float; };
-        no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
-        use_active_for_splits = nullableEnable;
-        default_split_ratio = mkNullOption { type = float; };
-      };
+    # Layouts:
+    dwindle = {
+      pseudotile = nullableEnable;
+      force_split = mkNullOption { type = ints.between 0 2; };
+      preserve_split = nullableEnable;
+      smart_split = nullableEnable;
+      smart_resizing = nullableEnable;
+      permanent_direction_override = nullableEnable;
+      special_scale_factor = mkNullOption { type = float; };
+      split_width_multiplier = mkNullOption { type = float; };
+      no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
+      use_active_for_splits = nullableEnable;
+      default_split_ratio = mkNullOption { type = float; };
+    };
 
-      master = {
-        allow_small_split = nullableEnable;
-        special_scale_factor = mkNullOption { type = float; };
-        mfact = mkNullOption { type = float; };
-        new_is_master = nullableEnable;
-        new_on_top = nullableEnable;
-        no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
-        orientation = mkNullOption { type = str; };
-        inherit_fullscreen = nullableEnable;
-        always_center_master = nullableEnable;
-        smart_resizing = nullableEnable;
-        drop_at_cursor = nullableEnable;
-      };
+    master = {
+      allow_small_split = nullableEnable;
+      special_scale_factor = mkNullOption { type = float; };
+      mfact = mkNullOption { type = float; };
+      new_is_master = nullableEnable;
+      new_on_top = nullableEnable;
+      no_gaps_when_only = mkNullOption { type = ints.between 0 2; };
+      orientation = mkNullOption { type = str; };
+      inherit_fullscreen = nullableEnable;
+      always_center_master = nullableEnable;
+      smart_resizing = nullableEnable;
+      drop_at_cursor = nullableEnable;
     };
   };
 }
