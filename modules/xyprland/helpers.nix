@@ -3,13 +3,15 @@ rec {
 
   mapToLines = items: map: toLines (filterNull (builtins.map map items));
 
-  isSetEmpty = set: builtins.length (builtins.attrNames set) == 0;
+  isEmptySet = s: builtins.length (builtins.attrNames s) == 0;
 
-  isSetNull = set:
-    builtins.all (value: value == null || value == { })
-    (builtins.attrValues set);
+  isNullSet = s: builtins.all (i: i == null) (builtins.attrValues s);
 
-  isNullSet = set: isSetEmpty set || isSetNull set;
+  isBlankSet = s:
+    builtins.all (i: builtins.isAttrs i && (isEmptySet i || isNullSet i))
+    (builtins.attrValues s);
+
+  isDeadSet = s: isEmptySet s || isNullSet s || isBlankSet s;
 
   filterNull = list: builtins.filter (i: i != null) list;
 

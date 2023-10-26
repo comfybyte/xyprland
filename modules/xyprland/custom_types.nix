@@ -1,18 +1,19 @@
 lib:
-with lib; rec {
+let inherit (lib) types;
+in rec {
   bind = types.submodule {
     options = {
-      enable = mkEnableOption "Whether to enable this keybind." // {
+      enable = lib.mkEnableOption "Whether to enable this keybind." // {
         default = true;
       };
-      flags = mkOption {
+      flags = lib.mkOption {
         type = with types; nullOr str;
         description =
           "A string of bind flags to add (<https://wiki.hyprland.org/Configuring/Binds/#bind-flags>).";
         example = "le";
         default = "";
       };
-      text = mkOption {
+      text = lib.mkOption {
         type = types.str;
         description = "This bind's contents.";
         example = "SUPER, Q, killactive, ";
@@ -22,20 +23,20 @@ with lib; rec {
 
   submap = types.submodule {
     options = {
-      enable = mkEnableOption "Whether to enable this submap." // {
+      enable = lib.mkEnableOption "Whether to enable this submap." // {
         default = true;
       };
-      name = mkOption {
+      name = lib.mkOption {
         type = types.str;
         description = "This submap's name.";
         example = "resize";
       };
-      binds = mkOption {
+      binds = lib.mkOption {
         type = types.listOf bind;
         description = "A list of binds to enable while inside this submap.";
         default = [ ];
       };
-      exit = mkOption {
+      exit = lib.mkOption {
         type = bind;
         description = "A bind to exit this submap. Defaults to Escape.";
         default = { text = ", escape, submap, reset"; };
@@ -45,18 +46,18 @@ with lib; rec {
 
   windowRule = types.submodule {
     options = {
-      enable = mkEnableOption "Whether to enable this window rule." // {
+      enable = lib.mkEnableOption "Whether to enable this window rule." // {
         default = true;
       };
-      rule = mkOption { type = types.str; };
-      window = mkOption { type = types.str; };
+      rule = lib.mkOption { type = types.str; };
+      window = lib.mkOption { type = types.str; };
     };
   };
 
   defaultWorkspace = types.submodule {
     options = {
-      text = mkOption { type = types.str; };
-      silent = mkEnableOption "Whether to not switch to it when opened.";
+      text = lib.mkOption { type = types.str; };
+      silent = lib.mkEnableOption "Whether to not switch to it when opened.";
     };
   };
 }

@@ -1,10 +1,9 @@
 # Xyprland
 A [Home Manager](https://github.com/nix-community/home-manager) module for 
 configuring [Hyprland](https://github.com/hyprwm/Hyprland) using Nix expressions, 
-inspired by [Nixvim](https://github.com/nix-community/nixvim).
+inspired by [Nixvim](https://github.com/nix-community/nixvim). 
 
-Spawned from my need to organise my configs ~~less badly~~ more decently and since I couldn't find anything
-similar (for some reason, weirdly enough). Very much a work-in-progress but usable.
+It's essentially a layer on top of the existing Home Manager options.
 
 ### Installation
 **With [flakes](https://nixos.wiki/wiki/Flakes):**
@@ -47,18 +46,19 @@ An example going over **most** options:
 {
     programs.xyprland = {
         enable = true;
-        xwayland.enable = true;
+        hyprland = {
+            xwayland.enable = true;
+            # ...other options for `wayland.windowManager.hyprland`.
+        };
         mod.key = "ALT"; # Default is SUPER.
         options.general = {
+            # Options are type-checked. (i.e. typos or wrong types won't even build)
+            # For unchecked options, use `programs.xyprland.hyprland.settings`.
             layout = "dwindle";
             gaps_in = 0;
             gaps_out = 0;
             "col.active_border" = "rgb(ffffff)";
             "col.inactive_border" = "rgb(000000)";
-        };
-        options.decoration = {
-            rounding = 2;
-            blur.enabled = true;
         };
         options.misc.force_hypr_chan = true;
         monitors = [ 

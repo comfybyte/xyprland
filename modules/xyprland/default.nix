@@ -1,7 +1,7 @@
 hyprland:
 { config, lib, pkgs, ... }:
-with lib;
 let
+  inherit (lib) types;
   cfg = config.programs.xyprland;
   helpers = import ./helpers.nix;
   customTypes = import ./custom_types.nix lib;
@@ -9,12 +9,26 @@ in {
   imports = [ hyprland.homeManagerModules.default ./submodules/options.nix ];
 
   options.programs.xyprland = {
-    enable = mkEnableOption "Whether to enable this module.";
+    enable = lib.mkEnableOption "Whether to enable this module.";
 
-    xwayland.enable = mkEnableOption "Whether to enable XWayland.";
+    hyprland = lib.mkOption {
+      type = types.anything;
+      description =
+        ''
+        Configuration to be passed down to `wayland.windowManager.hyprland`.
+        Overwrites Xyprland's configuration.
+        See <https://nix-community.github.io/home-manager/options.html#opt-wayland.windowManager.hyprland.enable>.
+        '';
+      example = lib.literalExpression ''
+        {
+          enableNvidiaPatches = true;
+        }
+      '';
+      default = { };
+    };
 
     mod = {
-      key = mkOption {
+      key = lib.mkOption {
         type = types.str;
         description =
           "Which key to use as mod. Referenced with $mod by default.";
@@ -22,7 +36,7 @@ in {
         default = "SUPER";
       };
 
-      name = mkOption {
+      name = lib.mkOption {
         type = types.str;
         description = "A name for the mod variable.";
         example = "modKey";
@@ -30,19 +44,19 @@ in {
       };
     };
 
-    monitors = mkOption {
+    monitors = lib.mkOption {
       type = with types; listOf (listOf str);
-      description = "A list of monitor configuration lists.";
-      example = ''
+      description = "A list of monitor configurations as lists.";
+      example = lib.literalExpression ''
         [ [ "DP-1" "1920x1080@60" "0x0" "1" ] ]
       '';
       default = [ ];
     };
 
-    env = mkOption {
+    env = lib.mkOption {
       type = with types; attrsOf str;
       description = "A set of environment variables to add.";
-      example = ''
+      example = lib.literalExpression ''
         {
           QT_QPA_PLATFORM = "wayland";
           XDG_CURRENT_DESKTOP = "Hyprland";
@@ -51,13 +65,13 @@ in {
       default = [ ];
     };
 
-    binds = mkOption {
+    binds = lib.mkOption {
       type = types.listOf customTypes.bind;
       description = "A list of keybinds.";
       default = [ ];
     };
 
-    submaps = mkOption {
+    submaps = lib.mkOption {
       type = with types;
         either (listOf customTypes.submap) (attrsOf (listOf customTypes.bind));
       description = ''
@@ -66,13 +80,13 @@ in {
       default = { };
     };
 
-    windowRules = mkOption {
+    windowRules = lib.mkOption {
       type = types.listOf customTypes.windowRule;
       description = "A list of window rules.";
       default = [ ];
     };
 
-    defaultWorkspaces = mkOption {
+    defaultWorkspaces = lib.mkOption {
       type = with types;
         attrsOf (listOf (either str customTypes.defaultWorkspace));
       description =
@@ -80,44 +94,36 @@ in {
       default = { };
     };
 
-    onceStart = mkOption {
+    onceStart = lib.mkOption {
       type = with types; listOf str;
       description = "A list of commands to execute on startup, once.";
       default = [ ];
     };
 
     extraConfig = {
-      pre = mkOption {
+      pre = lib.mkOption {
         type = types.lines;
         description = "Lines to prepend to configuration file.";
         default = "";
       };
-      post = mkOption {
+      post = lib.mkOption {
         type = types.lines;
         description = "Lines to postpend to configuration file.";
         default = "";
       };
     };
 
-    waybar = {
-      enable = mkEnableOption "Enable Waybar.";
-      style = mkOption {
-        type = types.lines;
-        description = "CSS styling.";
-        default = "";
-      };
-      settings = mkOption {
-        type = with types; attrsOf anything;
-        default = { };
-      };
+    waybar = lib.mkOption {
+      type = types.anything;
+      description = "Waybar options.";
+      default = {};
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
       package = hyprland.packages."${pkgs.system}".hyprland;
-      xwayland.enable = cfg.xwayland.enable;
 
       extraConfig = with helpers; ''
         ${cfg.extraConfig.pre}
@@ -137,7 +143,7 @@ in {
 
         ${cfg.extraConfig.post}
       '';
-    };
+    } // cfg.hyprland;
 
     programs.waybar = cfg.waybar;
   };
