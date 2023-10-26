@@ -3,10 +3,13 @@ rec {
 
   mapToLines = items: map: toLines (filterNull (builtins.map map items));
 
+  # There are no items.
   isEmptySet = s: builtins.length (builtins.attrNames s) == 0;
 
+  # All items are null.
   isNullSet = s: builtins.all (i: i == null) (builtins.attrValues s);
 
+  # All items are null or empty.
   isBlankSet = s:
     builtins.all (i: builtins.isAttrs i && (isEmptySet i || isNullSet i))
     (builtins.attrValues s);
@@ -23,7 +26,7 @@ rec {
         let
           isSet = builtins.isAttrs value;
           content = if isSet then
-            (if isNullSet value then null else (toHyprlandObj value))
+            (if isDeadSet value then null else (toHyprlandObj value))
           else
             parseSpecial value;
         in (if content == null then
@@ -96,6 +99,10 @@ rec {
               "bind = , escape, submap, reset")
           else
             null) submaps)) + "\n" + "submap = reset");
+
+  writeGlobals = globals:
+    toLines (builtins.attrValues
+      (builtins.mapAttrs (name: value: "${"$" + name} = ${value}") globals));
 
   writeOptions = options:
     toLines (filterNull (builtins.attrValues (builtins.mapAttrs (name: value:

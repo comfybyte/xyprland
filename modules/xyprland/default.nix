@@ -13,12 +13,11 @@ in {
 
     hyprland = lib.mkOption {
       type = types.anything;
-      description =
-        ''
+      description = ''
         Configuration to be passed down to `wayland.windowManager.hyprland`.
         Overwrites Xyprland's configuration.
         See <https://nix-community.github.io/home-manager/options.html#opt-wayland.windowManager.hyprland.enable>.
-        '';
+      '';
       example = lib.literalExpression ''
         {
           enableNvidiaPatches = true;
@@ -100,6 +99,17 @@ in {
       default = [ ];
     };
 
+    globals = lib.mkOption {
+      type = with types; attrsOf str;
+      description = "A set of variables that may be used in other options.";
+      example = lib.literalExpression ''
+        {
+          black = "rgb(000000)";
+        }
+      '';
+      default = { };
+    };
+
     extraConfig = {
       pre = lib.mkOption {
         type = types.lines;
@@ -116,7 +126,7 @@ in {
     waybar = lib.mkOption {
       type = types.anything;
       description = "Waybar options.";
-      default = {};
+      default = { };
     };
   };
 
@@ -129,6 +139,7 @@ in {
         ${cfg.extraConfig.pre}
 
         ${writeOptions cfg.options}
+        ${writeGlobals cfg.globals}
         ${"$" + cfg.mod.name} = ${cfg.mod.key}
         ${writeMonitors cfg.monitors}
         ${writeOnceStart cfg.onceStart}
