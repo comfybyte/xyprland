@@ -171,7 +171,7 @@ in {
         ${writeBinds cfg.binds}
 
         animations {
-          enabled = ${parseBool cfg.animation.enable}
+          enabled = ${toString (parseBool cfg.animation.enable)}
           ${writeCurves cfg.animation.beziers}
           ${writeAnimations cfg.animation.animations}
         }
