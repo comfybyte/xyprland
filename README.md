@@ -3,7 +3,8 @@ A [Home Manager](https://github.com/nix-community/home-manager) module for
 configuring [Hyprland](https://github.com/hyprwm/Hyprland) using Nix expressions, 
 inspired by [Nixvim](https://github.com/nix-community/nixvim). 
 
-It's essentially a layer on top of the existing Home Manager options.
+⚠️ This module was made as a learning project and to fit my own needs,
+so if you need something simpler or looser, I highly recommend the Home Manager options instead.
 
 ### Installation
 **With [flakes](https://nixos.wiki/wiki/Flakes):**
@@ -36,10 +37,10 @@ It's essentially a layer on top of the existing Home Manager options.
 ```
 
 ### Usage
-**⚠️ There's no documentation (at least not yet), 
+**⚠️  There's no documentation (neither do I plan to write one),
 but the [module definition](https://github.com/comfybyte/xyprland/blob/main/modules/xyprland/default.nix)
 and its [submodules](https://github.com/comfybyte/xyprland/tree/main/modules/xyprland/submodules)
-should hopefully be well-commented enough for now.**
+should be well-commented enough if you wanna use it.**
 
 An example going over **most** options:
 ```nix
@@ -48,7 +49,7 @@ An example going over **most** options:
         enable = true;
         hyprland = {
             xwayland.enable = true;
-            # ...other options for `wayland.windowManager.hyprland`.
+            # ...other options passed to `wayland.windowManager.hyprland`.
         };
         mod.key = "ALT"; # Default is SUPER.
         options.general = {
@@ -73,6 +74,11 @@ An example going over **most** options:
             { text = "$mod, Q, killactive, "; }
             { text = "$mod, mouse:272, movewindow"; flags = "m"; }
         ];
+        animation = {
+            enable = true;
+            animations = [ "windows, 1, 7, default, slide" ];
+            beziers = [ "overshot, 0.05, 0.9, 0.1, 1.1" ];
+        };
         defaultWorkspaces = {
             "2" = [ "firefox" ];
             "6" = [ { text = "krita"; silent = true; } ]

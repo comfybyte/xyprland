@@ -110,6 +110,30 @@ in {
       default = { };
     };
 
+    animation = {
+      enable = lib.mkEnableOption "Enable animations.";
+      animations = lib.mkOption {
+        type = with types; listOf str;
+        description = "A list of animations.";
+        example = lib.literalExpression ''
+          [
+            "workspaces, 1, 8, default"
+          ]
+        '';
+        default = [ ];
+      };
+      beziers = lib.mkOption {
+        type = with types; listOf str;
+        description = "A list of bezier curves.";
+        example = lib.literalExpression ''
+          [
+            "overshot, 0.05, 0.9, 0.1, 1.1"
+          ]
+        '';
+        default = [ ];
+      };
+    };
+
     extraConfig = {
       pre = lib.mkOption {
         type = types.lines;
@@ -143,9 +167,14 @@ in {
         ${"$" + cfg.mod.name} = ${cfg.mod.key}
         ${writeMonitors cfg.monitors}
         ${writeOnceStart cfg.onceStart}
-
         ${writeSubmaps cfg.submaps}
         ${writeBinds cfg.binds}
+
+        animations {
+          enabled = ${parseBool cfg.animation.enable}
+          ${writeCurves cfg.animation.beziers}
+          ${writeAnimations cfg.animation.animations}
+        }
 
         ${writeVars cfg.env}
 

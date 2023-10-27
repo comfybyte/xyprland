@@ -18,9 +18,10 @@ rec {
 
   filterNull = list: builtins.filter (i: i != null) list;
 
+  parseBool = a: if a == true then 1 else 0;
+
   toHyprlandObj = set:
     let
-      parseBool = a: if a == true then 1 else 0;
       parseSpecial = a: if builtins.isBool a then (parseBool a) else a;
       lines = filterNull (builtins.attrValues (builtins.mapAttrs (name: value:
         let
@@ -103,6 +104,11 @@ rec {
   writeGlobals = globals:
     toLines (builtins.attrValues
       (builtins.mapAttrs (name: value: "${"$" + name} = ${value}") globals));
+
+  writeAnimations = animations:
+    mapToLines animations (animation: "animation = ${animation}");
+
+  writeCurves = curves: mapToLines curves (curve: "bezier = ${curve}");
 
   writeOptions = options:
     toLines (filterNull (builtins.attrValues (builtins.mapAttrs (name: value:
