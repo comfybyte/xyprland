@@ -146,12 +146,6 @@ in {
         default = "";
       };
     };
-
-    waybar = lib.mkOption {
-      type = types.anything;
-      description = "Waybar options.";
-      default = { };
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -184,7 +178,5 @@ in {
         ${cfg.extraConfig.post}
       '';
     } // cfg.hyprland;
-
-    programs.waybar = cfg.waybar;
   };
 }
