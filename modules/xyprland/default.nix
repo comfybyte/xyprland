@@ -80,9 +80,14 @@ in {
     };
 
     windowRules = lib.mkOption {
-      type = types.listOf customTypes.windowRule;
-      description = "A list of window rules.";
-      default = [ ];
+      type = with types; attrsOf (listOf str);
+      description = "A set of window rules mapped to lists of windows.";
+      example = lib.literalExpression ''
+      {
+        opaque = [ "alacritty" ];
+      }
+      '';
+      default = { };
     };
 
     defaultWorkspaces = lib.mkOption {

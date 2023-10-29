@@ -44,16 +44,6 @@ in rec {
     };
   };
 
-  windowRule = types.submodule {
-    options = {
-      enable = lib.mkEnableOption "Whether to enable this window rule." // {
-        default = true;
-      };
-      rule = lib.mkOption { type = types.str; };
-      window = lib.mkOption { type = types.str; };
-    };
-  };
-
   defaultWorkspace = types.submodule {
     options = {
       text = lib.mkOption { type = types.str; };
