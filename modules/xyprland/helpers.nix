@@ -59,7 +59,7 @@ rec {
 
   writeWindowRules = rules:
     toLines (builtins.attrValues (builtins.mapAttrs (rule: windows:
-      mapToLines windows (window: "windowrules = ${rule}, ${window}")) rules));
+      mapToLines windows (window: "windowrule = ${rule}, ${window}")) rules));
 
   writeDefaultWorkspaces = defaultWorkspaces:
     builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs
