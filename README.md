@@ -52,16 +52,18 @@ An example going over **most** options:
             # ...other options passed to `wayland.windowManager.hyprland`.
         };
         mod.key = "ALT"; # Default is SUPER.
-        options.general = {
+        options = {
             # Options are type-checked. (i.e. typos or wrong types won't even build)
-            # For unchecked options, use `programs.xyprland.hyprland.settings`.
-            layout = "dwindle";
-            gaps_in = 0;
-            gaps_out = 0;
-            "col.active_border" = "rgb(ffffff)";
-            "col.inactive_border" = "rgb(000000)";
+            # For unchecked options, use `wayland.windowManager.hyprland`.
+            general = {
+                layout = "dwindle";
+                gaps_in = 0;
+                gaps_out = 0;
+                "col.active_border" = "rgb(ffffff)";
+                "col.inactive_border" = "rgb(000000)";
+            };
+            misc.force_hypr_chan = true;
         };
-        options.misc.force_hypr_chan = true;
         monitors = [ 
             ["DP-1" "1920x1080@144" "0x0" "1" ] 
             ["DP-2" "1920x1080" "1920x0" "1"]
@@ -78,6 +80,9 @@ An example going over **most** options:
             enable = true;
             animations = [ "windows, 1, 7, default, slide" ];
             beziers = [ "overshot, 0.05, 0.9, 0.1, 1.1" ];
+        };
+        windowRules = {
+            opaque = [ "alacritty" ];
         };
         defaultWorkspaces = {
             "2" = [ "firefox" ];
