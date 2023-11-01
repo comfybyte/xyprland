@@ -14,13 +14,16 @@ so if you need something simpler or looser, I highly recommend the Home Manager 
 {
     inputs = {
         nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-        xyprland.url = "github:comfybyte/xyprland";
-        
         home-manager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-        # Note: Hyprland input not required, as it's already used.
+
+        hyprland.url = "github:hyprwm/Hyprland";
+        xyprland = {
+            url = "github:comfybyte/xyprland";
+            inputs.hyprland.follows = "hyprland";
+        };
     };
 }
 ```
