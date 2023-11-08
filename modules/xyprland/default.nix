@@ -176,10 +176,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    xdg.portal = lib.mkIf cfg.enablePortal {
-      enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
-    };
+    packages = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
 
     wayland.windowManager.hyprland = {
       enable = true;
