@@ -176,7 +176,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    packages = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
+    home.packages = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
 
     wayland.windowManager.hyprland = {
       enable = true;
