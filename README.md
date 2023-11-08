@@ -13,7 +13,7 @@ so if you need something simpler or looser, I highly recommend the Home Manager 
 ```nix
 {
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # Might work with stable.
         home-manager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +23,7 @@ so if you need something simpler or looser, I highly recommend the Home Manager 
         xyprland = {
             url = "github:comfybyte/xyprland";
             inputs.hyprland.follows = "hyprland";
+            inputs.nixpkgs.follows = "nixpkgs;"
         };
     };
 }
@@ -55,6 +56,7 @@ An example going over **most** options:
             # ...other options passed to `wayland.windowManager.hyprland`.
         };
         mod.key = "ALT"; # Default is SUPER.
+        enablePortal = true; # To use hyprland's portal.
         options = {
             # Options are type-checked. (i.e. typos or wrong types won't even build)
             # For unchecked options, use `wayland.windowManager.hyprland`.
@@ -79,12 +81,17 @@ An example going over **most** options:
             { text = "$mod, Q, killactive, "; }
             { text = "$mod, mouse:272, movewindow"; flags = "m"; }
         ];
+        submaps = {
+            resize = [
+                # ...
+            ];
+        };
         animation = {
             enable = true;
             animations = [ "windows, 1, 7, default, slide" ];
             beziers = [ "overshot, 0.05, 0.9, 0.1, 1.1" ];
         };
-        windowRules = {
+        windowRules = { # Or windowRulesV2.
             opaque = [ "alacritty" ];
         };
         defaultWorkspaces = {
@@ -99,5 +106,5 @@ An example going over **most** options:
     };
 }
 ```
-You can see [my own configuration](https://github.com/comfybyte/nixcfg/tree/master/common/home-manager/xyprland)
+You can see [my own configuration](https://github.com/mayaneru/nixcfg/tree/master/common/home-manager/xyprland)
 for a practical example. 

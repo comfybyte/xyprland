@@ -57,9 +57,11 @@ rec {
       else
         null);
 
-  writeWindowRules = rules:
+  writeWindowRules = rules: v:
     toLines (builtins.attrValues (builtins.mapAttrs (rule: windows:
-      mapToLines windows (window: "windowrule = ${rule}, ${window}")) rules));
+      mapToLines windows (window:
+        "windowrule${if v == "v1" then "" else "v2"} = ${rule}, ${window}"))
+      rules));
 
   writeDefaultWorkspaces = defaultWorkspaces:
     builtins.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs

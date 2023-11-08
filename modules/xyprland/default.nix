@@ -14,7 +14,7 @@ in {
     hyprland = lib.mkOption {
       type = types.anything;
       description = ''
-        Configuration to be passed down to `wayland.windowManager.hyprland`.
+        Alias for `wayland.windowManager.hyprland`.
         Overwrites Xyprland's configuration.
         See <https://nix-community.github.io/home-manager/options.html#opt-wayland.windowManager.hyprland.enable>.
       '';
@@ -25,6 +25,8 @@ in {
       '';
       default = { };
     };
+
+    enablePortal = lib.mkEnableOption "Whether to enable `xdg-desktop-portal-hyprland`.";
 
     mod = {
       key = lib.mkOption {
@@ -76,6 +78,13 @@ in {
       description = ''
         Submaps to add as either a set with each value being a list of binds, or a list of custom submodules.
       '';
+      example = lib.literalExpression ''
+      {
+        resize = [
+          # Binds go here...
+        ];
+      }
+      '';
       default = { };
     };
 
@@ -84,11 +93,23 @@ in {
       description = "A set of window rules mapped to lists of windows.";
       example = lib.literalExpression ''
       {
-        opaque = [ "alacritty" ];
+        opaque = [ "title:^alacritty$" ];
       }
       '';
       default = { };
     };
+
+    windowRulesV2 = lib.mkOption {
+      type = with types; attrsOf (listOf str);
+      description = "Same as windowRules but for v2 rules (can match many windows).";
+      example = lib.literalExpression ''
+      {
+        opaque = [ "title:^alacritty$, title:^kitty$" ];
+      }
+      '';
+      default = { };
+    };
+
 
     defaultWorkspaces = lib.mkOption {
       type = with types;
@@ -154,6 +175,8 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    xdg.portal.extraPortals = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
+
     wayland.windowManager.hyprland = {
       enable = true;
       package = hyprland.packages."${pkgs.system}".hyprland;
@@ -177,7 +200,8 @@ in {
 
         ${writeVars cfg.env}
 
-        ${writeWindowRules cfg.windowRules}
+        ${writeWindowRules cfg.windowRules "v1"}
+        ${writeWindowRules cfg.windowRulesV2 "v2"}
         ${writeDefaultWorkspaces cfg.defaultWorkspaces}
 
         ${cfg.extraConfig.post}
