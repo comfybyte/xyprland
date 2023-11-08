@@ -26,7 +26,8 @@ in {
       default = { };
     };
 
-    enablePortal = lib.mkEnableOption "Whether to enable `xdg-desktop-portal-hyprland`.";
+    enablePortal =
+      lib.mkEnableOption "Whether to enable `xdg-desktop-portal-hyprland`.";
 
     mod = {
       key = lib.mkOption {
@@ -79,11 +80,11 @@ in {
         Submaps to add as either a set with each value being a list of binds, or a list of custom submodules.
       '';
       example = lib.literalExpression ''
-      {
-        resize = [
-          # Binds go here...
-        ];
-      }
+        {
+          resize = [
+            # Binds go here...
+          ];
+        }
       '';
       default = { };
     };
@@ -92,24 +93,24 @@ in {
       type = with types; attrsOf (listOf str);
       description = "A set of window rules mapped to lists of windows.";
       example = lib.literalExpression ''
-      {
-        opaque = [ "title:^alacritty$" ];
-      }
+        {
+          opaque = [ "title:^alacritty$" ];
+        }
       '';
       default = { };
     };
 
     windowRulesV2 = lib.mkOption {
       type = with types; attrsOf (listOf str);
-      description = "Same as windowRules but for v2 rules (can match many windows).";
+      description =
+        "Same as windowRules but for v2 rules (can match many windows).";
       example = lib.literalExpression ''
-      {
-        opaque = [ "title:^alacritty$, title:^kitty$" ];
-      }
+        {
+          opaque = [ "title:^alacritty$, title:^kitty$" ];
+        }
       '';
       default = { };
     };
-
 
     defaultWorkspaces = lib.mkOption {
       type = with types;
@@ -175,7 +176,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    xdg.portal.extraPortals = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
+    xdg.portal = lib.mkIf cfg.enablePortal {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    };
 
     wayland.windowManager.hyprland = {
       enable = true;
