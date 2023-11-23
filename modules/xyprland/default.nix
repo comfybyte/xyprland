@@ -47,10 +47,10 @@ in {
     };
 
     monitors = lib.mkOption {
-      type = with types; listOf (listOf str);
-      description = "A list of monitor configurations as lists.";
+      type = with types; listOf str;
+      description = "A list of monitor configurations.";
       example = lib.literalExpression ''
-        [ [ "DP-1" "1920x1080@60" "0x0" "1" ] ]
+        [ "DP-1, 1920x1080@60, 0x0, 1"]
       '';
       default = [ ];
     };

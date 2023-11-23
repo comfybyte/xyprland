@@ -42,8 +42,7 @@ rec {
     '';
 
   writeMonitors = monitors:
-    mapToLines monitors
-    (monitor: "monitor = " + (builtins.concatStringsSep ", " monitor));
+    mapToLines monitors (monitor: "monitor = ${monitor}");
 
   writeVars = env:
     toLines (builtins.attrValues
