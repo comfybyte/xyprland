@@ -1,35 +1,30 @@
-# Xyprland
-A [Home Manager](https://github.com/nix-community/home-manager) module for 
-configuring [Hyprland](https://github.com/hyprwm/Hyprland) using Nix expressions, 
-inspired by [Nixvim](https://github.com/nix-community/nixvim). 
-
-⚠️ This module was made as a learning project and to fit my own needs,
-so if you need something simpler or looser, I highly recommend the Home Manager options instead.
+## ❄️💧 xyprland
+A configuration layer on top of the existing Home Manager options for Hyprland.
+Made as a learning project and to fit my own needs.
 
 ### Installation
-**With [flakes](https://nixos.wiki/wiki/Flakes):**
+**With flakes:**
 
 1. Add this repository as an input:
 ```nix
 {
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # Might work with stable.
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        hyprland.url = "github:hyprwm/Hyprland";
         home-manager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
         };
-
-        hyprland.url = "github:hyprwm/Hyprland";
         xyprland = {
             url = "github:comfybyte/xyprland";
             inputs.hyprland.follows = "hyprland";
-            inputs.nixpkgs.follows = "nixpkgs;"
+            inputs.nixpkgs.follows = "nixpkgs";
         };
     };
 }
 ```
 
-2. The module is available as `inputs.xyprland.homeManagerModules.xyprland`:
+2. Import the module `inputs.xyprland.homeManagerModules.xyprland`:
 ```nix
 # Somewhere in your Home Manager configuration.
 { inputs, ...}: {
@@ -43,8 +38,7 @@ so if you need something simpler or looser, I highly recommend the Home Manager 
 ### Usage
 **⚠️  There's no documentation (neither do I plan to write one),
 but the [module definition](https://github.com/comfybyte/xyprland/blob/main/modules/xyprland/default.nix)
-and its [submodules](https://github.com/comfybyte/xyprland/tree/main/modules/xyprland/submodules)
-should be well-commented enough if you wanna use it.**
+should be well-commented if you wanna use it.**
 
 An example going over **most** options:
 ```nix
@@ -56,26 +50,17 @@ An example going over **most** options:
             # ...other options passed to `wayland.windowManager.hyprland`.
         };
         mod.key = "ALT"; # Default is SUPER.
-        enablePortal = true; # To use hyprland's portal.
         options = {
-            # Options are type-checked. (i.e. typos or wrong types won't even build)
-            # For unchecked options, use `wayland.windowManager.hyprland`.
-            general = {
-                layout = "dwindle";
-                gaps_in = 0;
-                gaps_out = 0;
-                "col.active_border" = "rgb(ffffff)";
-                "col.inactive_border" = "rgb(000000)";
-            };
+            # Can be any shape, checked after build.
+            general.layout = "dwindle";
             misc.force_hypr_chan = true;
         };
         monitors = [ 
-            ["DP-1" "1920x1080@144" "0x0" "1" ] 
-            ["DP-2" "1920x1080" "1920x0" "1"]
+            ["DP-1, 1920x1080@144, 0x0, 1" ] 
         ];
         env = {
-            "QT_QPA_PLATFORM" = "wayland;xcb";
-            "MOZ_ENABLE_WAYLAND" = "1";
+            QT_QPA_PLATFORM = "wayland;xcb";
+            MOZ_ENABLE_WAYLAND = "1";
         };
         binds = [
             { text = "$mod, Q, killactive, "; }
@@ -106,5 +91,5 @@ An example going over **most** options:
     };
 }
 ```
-You can see [my own configuration](https://github.com/mayaneru/nixcfg/tree/master/common/home-manager/xyprland)
+You can see [my own configuration](https://github.com/comfybyte/flake-config/tree/master/common/home-manager/xyprland)
 for a practical example. 

@@ -6,11 +6,8 @@ let
   helpers = import ./helpers.nix;
   customTypes = import ./custom_types.nix lib;
 in {
-  imports = [ hyprland.homeManagerModules.default ./submodules/options.nix ];
-
   options.programs.xyprland = {
     enable = lib.mkEnableOption "Whether to enable this module.";
-
     hyprland = lib.mkOption {
       type = types.anything;
       description = ''
@@ -25,10 +22,17 @@ in {
       '';
       default = { };
     };
-
-    enablePortal =
-      lib.mkEnableOption "Whether to enable `xdg-desktop-portal-hyprland`.";
-
+    options = lib.mkOption {
+      type = types.anything;
+      description = "A set of Hyprland options.";
+      example = lib.literalExpression ''
+        {
+          general.layout = "dwindle";
+          decoration.blur.enabled = false;
+        }
+      '';
+      default = { };
+    };
     mod = {
       key = lib.mkOption {
         type = types.str;
@@ -37,7 +41,6 @@ in {
         example = "ALT";
         default = "SUPER";
       };
-
       name = lib.mkOption {
         type = types.str;
         description = "A name for the mod variable.";
@@ -45,7 +48,6 @@ in {
         default = "mod";
       };
     };
-
     monitors = lib.mkOption {
       type = with types; listOf str;
       description = "A list of monitor configurations.";
@@ -54,7 +56,6 @@ in {
       '';
       default = [ ];
     };
-
     env = lib.mkOption {
       type = with types; attrsOf str;
       description = "A set of environment variables to add.";
@@ -66,13 +67,11 @@ in {
       '';
       default = [ ];
     };
-
     binds = lib.mkOption {
       type = types.listOf customTypes.bind;
       description = "A list of keybinds.";
       default = [ ];
     };
-
     submaps = lib.mkOption {
       type = with types;
         either (listOf customTypes.submap) (attrsOf (listOf customTypes.bind));
@@ -88,7 +87,6 @@ in {
       '';
       default = { };
     };
-
     windowRules = lib.mkOption {
       type = with types; attrsOf (listOf str);
       description = "A set of window rules mapped to lists of windows.";
@@ -99,7 +97,6 @@ in {
       '';
       default = { };
     };
-
     windowRulesV2 = lib.mkOption {
       type = with types; attrsOf (listOf str);
       description =
@@ -111,7 +108,6 @@ in {
       '';
       default = { };
     };
-
     defaultWorkspaces = lib.mkOption {
       type = with types;
         attrsOf (listOf (either str customTypes.defaultWorkspace));
@@ -119,13 +115,11 @@ in {
         "A set of workspace names mapped to a list of windows that should be moved to them.";
       default = { };
     };
-
     onceStart = lib.mkOption {
       type = with types; listOf str;
       description = "A list of commands to execute on startup, once.";
       default = [ ];
     };
-
     globals = lib.mkOption {
       type = with types; attrsOf str;
       description = "A set of variables that may be used in other options.";
@@ -136,7 +130,6 @@ in {
       '';
       default = { };
     };
-
     animation = {
       enable = lib.mkEnableOption "Enable animations.";
       animations = lib.mkOption {
@@ -160,7 +153,6 @@ in {
         default = [ ];
       };
     };
-
     extraConfig = {
       pre = lib.mkOption {
         type = types.lines;
@@ -176,8 +168,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = lib.mkIf cfg.enablePortal [ pkgs.xdg-desktop-portal-hyprland ];
-
     wayland.windowManager.hyprland = {
       enable = true;
       package = hyprland.packages."${pkgs.system}".hyprland;
