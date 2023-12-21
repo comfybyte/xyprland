@@ -70,7 +70,7 @@ rec {
             isSet = builtins.isAttrs window;
             silent = if isSet && window.silent then " silent" else "";
             text = if isSet then window.text else window;
-          in "windowrule = workspace ${workspace}${silent}, ${text}"))
+          in "windowrulev2 = workspace ${workspace}${silent}, ${text}"))
       defaultWorkspaces));
 
   writeOnceStart = commands:

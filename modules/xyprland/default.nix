@@ -111,8 +111,10 @@ in {
     defaultWorkspaces = lib.mkOption {
       type = with types;
         attrsOf (listOf (either str customTypes.defaultWorkspace));
-      description =
-        "A set of workspace names mapped to a list of windows that should be moved to them.";
+      description = ''
+        A set of workspace names mapped to a list of windows that should be moved to them.
+        Alias for windowRulev2 with workspace.
+      '';
       default = { };
     };
     onceStart = lib.mkOption {
