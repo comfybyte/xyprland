@@ -1,5 +1,5 @@
 ## ❄️💧 xyprland
-A configuration layer on top of the existing Home Manager options for Hyprland.
+A thin configuration layer on top of the existing Home Manager options for Hyprland.
 Made as a learning project and to fit my own needs.
 
 ### Installation
@@ -36,9 +36,8 @@ Made as a learning project and to fit my own needs.
 ```
 
 ### Usage
-**⚠️  There's no documentation (neither do I plan to write one),
-but the [module definition](https://github.com/comfybyte/xyprland/blob/main/modules/xyprland/default.nix)
-should be well-commented if you wanna use it.**
+Detailed option descriptions
+can be found at [<modules/xyprland>](https://github.com/comfybyte/xyprland/blob/main/modules/xyprland/default.nix).
 
 An example going over **most** options:
 ```nix
@@ -77,7 +76,7 @@ An example going over **most** options:
             beziers = [ "overshot, 0.05, 0.9, 0.1, 1.1" ];
         };
         windowRules = { # Or windowRulesV2.
-            opaque = [ "alacritty" ];
+            opaque = [ "title:^alacritty$" ];
         };
         defaultWorkspaces = {
             "2" = [ "firefox" ];
@@ -91,5 +90,3 @@ An example going over **most** options:
     };
 }
 ```
-You can see [my own configuration](https://github.com/comfybyte/flake-config/tree/master/common/home-manager/xyprland)
-for a practical example. 
